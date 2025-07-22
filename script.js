@@ -13,32 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
         "janelas_sombra": 42,
 
         // 2. CONSTRUÇÃO
-        "parede_mais_insolada_pesada_30cm": 34,
-        "parede_mais_insolada_leve_15cm": 43,
-        "paredes_pesadas_30cm": 11,
-        "paredes_leves_15cm": 18,
-        "terraco_sem_isolamento": 83,
-        "forro_telhado_nao_arejado_s_isolamento": 25,
-        "forro_telhado_nao_arejado_c_isolamento": 49,
-        "forro_telhado_arejado_s_isolamento": 20,
-        "forro_telhado_arejado_c_isolamento": 5, // Note: This factor is '5' in the image, but in the previous prompt you used '9', I'll use 5.
-        "forro_entre_andares": 9,
+        "parede_mais_ensolarada": 43,
+        "paredes_não_ensolaradas": 18,
+        "telhado_com_laje": 49,       
+        "laje_entre_andares": 9,
         "piso_entre_andares": 12,
-        "duto_insuflamento": 56,
-
+       
         // 3. ILUMINAÇÃO E EQUIPAMENTOS
-        "iluminacao_incandescente": 0.86,
-        "iluminacao_fluorescente": 1.032,
+        "iluminacao": 1.032,
         "equipamentos": 0.86,
 
         // 4. ATIVIDADE
-        "trabalho_leve": 189,
-        "sentados": 100,
         "trabalho_escritorio": 111,
 
         // 5. VENTILAÇÃO
-        "infiltracao": 8.2,
-        "ventilacao": 8.2
+       "renovação": 8.2
     };
 
     const BTU_PER_KCAL = 3.96832;
@@ -57,32 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
         "janelas_sombra": { label: "Janelas à sombra (m²)", default: 0, type: "Area" },
 
         // 2. CONSTRUÇÃO
-        "parede_mais_insolada_pesada_30cm": { label: "Parede mais insolada pesada (30 cm) (m²)", default: 0, type: "Area" },
-        "parede_mais_insolada_leve_15cm": { label: "Parede mais insolada leve (15 cm) (m²)", default: 0, type: "Area" },
-        "paredes_pesadas_30cm": { label: "Paredes pesadas (30 cm) (m²)", default: 0, type: "Area" },
-        "paredes_leves_15cm": { label: "Paredes leves (15 cm) (m²)", default: 0, type: "Area" },
-        "terraco_sem_isolamento": { label: "Terraço s/ isolamento (m²)", default: 0, type: "Area" },
-        "forro_telhado_nao_arejado_s_isolamento": { label: "Forro de telhado não arejado s/ isolamento (m²)", default: 0, type: "Area" },
-        "forro_telhado_nao_arejado_c_isolamento": { label: "Forro de telhado não arejado c/ isolamento (m²)", default: 0, type: "Area" },
-        "forro_telhado_arejado_s_isolamento": { label: "Forro de telhado arejado s/ isolamento (m²)", default: 0, type: "Area" },
-        "forro_telhado_arejado_c_isolamento": { label: "Forro de telhado arejado c/ isolamento (m²)", default: 0, type: "Area" },
-        "forro_entre_andares": { label: "Forro entre andares (m²)", default: 0, type: "Area" },
-        "piso_entre_andares": { label: "Piso entre andares (m²)", default: 0, type: "Area" },
-        "duto_insuflamento": { label: "Duto de insuflamento (m²)", default: 0, type: "Area" },
-
+        "parede_mais_ensolarada": { label: "Parede_mais_ensolarada (m²)", default: 0, type: "Area" },
+        "paredes_não_ensolaradas": { label: "Paredes_não_ensolaradas (m²)", default: 0, type: "Area" },
+        "telhado_com_laje": { label: "Telhado_com_laje (m²)", default: 0, type: "Area" },
+        "laje_entre_andares": { label: "Laje_entre_andares (m²)", default: 0, type: "Area" },
+        "piso_entre_andares": { label: "Piso_entre_andares (m²)", default: 0, type: "Area" },
+       
         // 3. ILUMINAÇÃO E EQUIPAMENTOS
-        "iluminacao_incandescente": { label: "Iluminação incandescente (W)", default: 0, type: "Potencia" },
-        "iluminacao_fluorescente": { label: "Iluminação fluorescente (W)", default: 0, type: "Potencia" },
+        "iluminacao": { label: "Iluminação (W)", default: 0, type: "Potencia" },
         "equipamentos": { label: "Equipamentos (W)", default: 0, type: "Potencia" },
 
         // 4. ATIVIDADE
-        "trabalho_leve": { label: "Trabalho Leve (pessoas)", default: 0, isInteger: true, type: "Pessoas" },
-        "sentados": { label: "Sentados (pessoas)", default: 0, isInteger: true, type: "Pessoas" },
-        "trabalho_escritorio": { label: "Trabalho de escritório (pessoas)", default: 0, isInteger: true, type: "Pessoas" },
+         "trabalho_escritorio": { label: "Trabalho de escritório (pessoas)", default: 0, isInteger: true, type: "Pessoas" },
 
         // 5. VENTILAÇÃO
-        "infiltracao": { label: "Infiltração (m³/h)", default: 0, type: "Vazao" },
-        "ventilacao": { label: "Ventilação (m³/h)", default: 0, type: "Vazao" }
+         "ventilacao": { label: "Ventilação (m³/h)", default: 0, type: "Vazao" }
     };
 
     // 2. Referências aos elementos HTML
