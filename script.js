@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. CONSTRUÇÃO
         "parede_mais_ensolarada": 43,
         "paredes_não_ensolaradas": 18,
-        "telhado_com_laje": 49,       
+        "telhado_com_laje": 49,        
         "laje_entre_andares": 9,
         "piso_entre_andares": 12,
-       
+        
         // 3. ILUMINAÇÃO E EQUIPAMENTOS
         "iluminacao": 1.032,
         "equipamentos": 0.86,
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "trabalho_escritorio": 111,
 
         // 5. VENTILAÇÃO
-       "renovação": 8.2
+        "ventilacao": 8.2 // Corrigido: Adicionado o fator para 'ventilacao' (assumindo o mesmo que 'renovacao')
     };
 
     const BTU_PER_KCAL = 3.96832;
@@ -46,21 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
         "janelas_sombra": { label: "Janelas à sombra (m²)", default: 0, type: "Area" },
 
         // 2. CONSTRUÇÃO
-        "parede_mais_ensolarada": { label: "Parede_mais_ensolarada (m²)", default: 0, type: "Area" },
-        "paredes_não_ensolaradas": { label: "Paredes_não_ensolaradas (m²)", default: 0, type: "Area" },
-        "telhado_com_laje": { label: "Telhado_com_laje (m²)", default: 0, type: "Area" },
-        "laje_entre_andares": { label: "Laje_entre_andares (m²)", default: 0, type: "Area" },
-        "piso_entre_andares": { label: "Piso_entre_andares (m²)", default: 0, type: "Area" },
-       
+        "parede_mais_ensolarada": { label: "Parede mais ensolarada (m²)", default: 0, type: "Area" },
+        "paredes_não_ensolaradas": { label: "Paredes não ensolaradas (m²)", default: 0, type: "Area" },
+        "telhado_com_laje": { label: "Telhado com laje (m²)", default: 0, type: "Area" },
+        "laje_entre_andares": { label: "Laje entre andares (m²)", default: 0, type: "Area" },
+        "piso_entre_andares": { label: "Piso entre andares (m²)", default: 0, type: "Area" },
+        
         // 3. ILUMINAÇÃO E EQUIPAMENTOS
         "iluminacao": { label: "Iluminação (W)", default: 0, type: "Potencia" },
         "equipamentos": { label: "Equipamentos (W)", default: 0, type: "Potencia" },
 
         // 4. ATIVIDADE
-         "trabalho_escritorio": { label: "Trabalho de escritório (pessoas)", default: 0, isInteger: true, type: "Pessoas" },
+        "trabalho_escritorio": { label: "Trabalho de escritório (pessoas)", default: 0, isInteger: true, type: "Pessoas" },
 
         // 5. VENTILAÇÃO
-         "ventilacao": { label: "Ventilação (m³/h)", default: 0, type: "Vazao" }
+        "ventilacao": { label: "Ventilação (m³/h)", default: 0, type: "Vazao" }
     };
 
     // 2. Referências aos elementos HTML
@@ -139,10 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
             let calculatedLoad = 0;
 
             if (factor !== undefined) {
-                // For "ILUMINAÇÃO E EQUIPAMENTOS" (Potencia) convert Watts to Kcal/h
-                // 1 Watt = 0.86 Kcal/h. However, the factors provided are already in Kcal/h per unit of area/person/flow.
-                // So, we just multiply the input by the factor.
                 calculatedLoad = inputs[key] * factor;
+            } else {
+                // Opcional: Logar um aviso se um fator estiver faltando, o que pode indicar um erro de digitação
+                console.warn(`Fator não encontrado para a chave: ${key}. A carga para este item será 0.`);
             }
             
             individualLoads[key] = calculatedLoad;
