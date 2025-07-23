@@ -1,7 +1,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* Alterado de #f4f7f6 para um verde claro */
-    background-color: #e6ffe6; /* Um tom de verde claro, você pode ajustar o código HEX se quiser outro */
+    /* A sua escolha de verde claro para o fundo está ótima! */
+    background-color: #e6ffe6; 
     margin: 0;
     padding: 20px;
     display: flex;
@@ -22,7 +22,7 @@ body {
 }
 
 h1 {
-    color: #0056b3;
+    color: #1a5e20; /* Alterado de azul para um verde escuro */
     text-align: center;
     margin-bottom: 10px;
 }
@@ -45,14 +45,14 @@ h1 {
 
 .table-header, .table-row {
     display: grid;
-    grid-template-columns: 2.5fr 1fr 1fr 1.5fr; /* Ajuste na proporção das colunas */
+    grid-template-columns: 2.5fr 1fr 1fr 1.5fr;
     align-items: center;
     padding: 12px 15px;
     border-bottom: 1px solid #eee;
 }
 
 .table-header {
-    background-color: #007bff;
+    background-color: #28a745; /* Alterado de azul para um verde principal */
     color: white;
     font-weight: bold;
     border-bottom: none;
@@ -93,9 +93,9 @@ h1 {
 }
 
 .row-input input:focus {
-    border-color: #007bff;
+    border-color: #28a745; /* Alterado de azul para verde */
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25); /* Alterado de azul para verde */
 }
 
 .row-factor, .row-calculated-load {
@@ -105,7 +105,7 @@ h1 {
 }
 
 .row-calculated-load {
-    color: #0056b3;
+    color: #1a5e20; /* Alterado de azul para verde escuro */
 }
 
 /* Seção de Resultados Totais */
@@ -120,7 +120,7 @@ h1 {
     grid-template-columns: 1fr;
     gap: 10px;
     padding: 15px;
-    background-color: #e0f7fa;
+    background-color: #d4edda; /* Alterado de azul claro para um verde bem claro */
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
@@ -131,7 +131,7 @@ h1 {
     align-items: center;
     font-size: 1.2em;
     padding: 8px 0;
-    border-bottom: 1px dashed #c0e0e7;
+    border-bottom: 1px dashed #b1dfbb; /* Alterado para um tom de verde */
 }
 
 .total-item:last-child {
@@ -140,10 +140,10 @@ h1 {
 
 .result-value {
     font-weight: bold;
-    color: #007bff;
+    color: #155724; /* Alterado de azul para um verde mais escuro e legível */
 }
 
-/* Mensagens de Erro e Validação */
+/* Mensagens de Erro e Validação (Mantido em vermelho por padrão) */
 .error-messages {
     color: #dc3545;
     background-color: #f8d7da;
@@ -151,7 +151,7 @@ h1 {
     border-radius: 5px;
     padding: 15px;
     margin-top: 20px;
-    display: none; /* Escondido por padrão */
+    display: none; 
     text-align: center;
 }
 
@@ -160,23 +160,22 @@ h1 {
     box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2) !important;
 }
 
-/* Responsividade para telas menores (ex: celulares) */
+/* Responsividade para telas menores (sem alterações de cor) */
 @media (max-width: 768px) {
     .table-header {
-        display: none; /* Esconde o cabeçalho fixo */
+        display: none;
     }
 
     .table-row {
-        grid-template-columns: 1fr; /* Empilha as colunas */
+        grid-template-columns: 1fr;
         gap: 8px;
         padding: 15px;
     }
 
     .row-label, .row-input input, .row-factor, .row-calculated-load {
-        text-align: left; /* Alinha tudo à esquerda */
+        text-align: left;
     }
-
-    /* Adiciona um label antes do valor para identificar o que é */
+    
     .row-factor::before, .row-calculated-load::before {
         content: attr(data-label) ": ";
         font-weight: normal;
