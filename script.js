@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateInputRows() {
         for (const key in PARCEL_DEFINITIONS) {
             const parcel = PARCEL_DEFINITIONS[key];
-            // A chave 'key' agora corresponderá em ambos os objetos
             const factor = HEAT_GAIN_FACTORS[key];
 
             const row = document.createElement('div');
@@ -92,8 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="number" id="input_${key}" value="${parcel.default}" min="0" step="${parcel.isInteger ? '1' : 'any'}">
                 </span>
                 <span class="row-factor" data-label="Fator Fixo">${factor !== undefined ? factor : '-'}</span>
-                <span class="row-calculated-load" data-label="Carga Térmica (kcal/h)">0</span>
+                <span class="row-calculated-load" data-label="Carga Térmica (kcal/h)">0 kcal/h</span>
             `;
+            // ^^^^^^ AQUI ESTÁ A MUDANÇA: Adicionado " kcal/h" ao final do span.
 
             inputRowsContainer.appendChild(row);
 
@@ -145,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (factor !== undefined) {
                 calculatedLoad = inputs[key] * factor;
             } else {
-                // Com a correção, este aviso não deve mais aparecer.
                 console.warn(`Fator não encontrado para a chave: ${key}. A carga para este item será 0.`);
             }
 
@@ -161,15 +160,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Exibe os Resultados na Interface
     function displayResults(results) {
-        // Garante que o span exista antes de tentar modificar
         if(totalKcalhSpan) totalKcalhSpan.textContent = results.totalKcalh.toFixed(0);
         if(totalBtuhSpan) totalBtuhSpan.textContent = results.totalBtuh.toFixed(0);
         if(totalTrSpan) totalTrSpan.textContent = results.totalTr.toFixed(1);
 
-        for (const key in PARCEL_DEFINITIONS) { // Itera sobre PARCEL_DEFINITIONS para garantir a ordem e zerar campos vazios
+        for (const key in PARCEL_DEFINITIONS) {
             const load = results.individualLoads[key] || 0;
             if (calculatedLoadSpans[key]) {
-                calculatedLoadSpans[key].textContent = load.toFixed(0);
+                // AQUI TAMBÉM: Adicionado " kcal/h" ao final do texto exibido.
+                calculatedLoadSpans[key].textContent = `${load.toFixed(0)} kcal/h`;
             }
         }
     }
@@ -181,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const results = calculateThermalLoad(inputs);
             displayResults(results);
         } else {
-            // Zera os resultados se houver erro de validação
             displayResults({ totalKcalh: 0, totalBtuh: 0, totalTr: 0, individualLoads: {} });
         }
     }
