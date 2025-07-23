@@ -1,24 +1,26 @@
 // Aguarda o carregamento completo do DOM para iniciar o script
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // 1. Constantes com os valores ajustados conforme a imagem.
     // HEAT_GAIN_FACTORS agora corresponde à coluna "Fator".
     // Os fatores para cada categoria foram extraídos diretamente da imagem fornecida.
     const HEAT_GAIN_FACTORS = {
         // 1. JANELAS
-        "janela_sol_e_o": 353,
-        "janela_sol_se_so": 245,
-        "janela_sol_ne_no": 284,
-        "janela_sol_n": 160,
+        "janela_oeste_com_cortina": 353,
+        "janela_sol_se_so_com_cortina": 245,
+        "janela_sol_ne_no_com_cortina": 284,
+        "janela_norte": 160,
         "janelas_sombra": 42,
+        "janelas_oeste_sem_cortina": 530,
 
         // 2. CONSTRUÇÃO
-        "parede_mais_ensolarada": 43,
+        "parede_ao_sol_oeste": 43,
+        "parede_ao_sol_norte": 25,
         "paredes_não_ensolaradas": 18,
-        "telhado_com_laje": 49,        
+        "telhado_com_laje": 49,
         "laje_entre_andares": 9,
         "piso_entre_andares": 12,
-        
+
         // 3. ILUMINAÇÃO E EQUIPAMENTOS
         "iluminacao": 1.032,
         "equipamentos": 0.86,
@@ -27,31 +29,32 @@ document.addEventListener('DOMContentLoaded', () => {
         "trabalho_escritorio": 111,
 
         // 5. VENTILAÇÃO
-        "ventilacao": 8.2 // Corrigido: Adicionado o fator para 'ventilacao' (assumindo o mesmo que 'renovacao')
+        "ventilacao": 8.2
     };
 
     const BTU_PER_KCAL = 3.96832;
     const BTU_PER_TR = 12000.0;
 
-    // PARCEL_DEFINITIONS agora define os rótulos e valores padrão para a coluna "Quantidade".
-    // Os valores de 'default' são inicializados como 0, pois a imagem não fornece esses valores
-    // diretamente para a coluna "Quantidade" ou "Área". O usuário precisará preenchê-los.
-    // Adicionei os campos 'Potencia' e 'Pessoas' onde aplicável.
+    // =================================================================================
+    // CORREÇÃO PRINCIPAL: As chaves e rótulos foram alinhados com HEAT_GAIN_FACTORS
+    // =================================================================================
     const PARCEL_DEFINITIONS = {
         // 1. JANELAS
-        "janela_sol_e_o": { label: "Janela ao sol LESTE ou OESTE (m²)", default: 0, type: "Area" },
-        "janela_sol_se_so": { label: "Janela ao sol SE/SO (m²)", default: 0, type: "Area" },
-        "janela_sol_ne_no": { label: "Janela ao sol NE/NO (m²)", default: 0, type: "Area" },
-        "janela_sol_n": { label: "Janela ao sol N (m²)", default: 0, type: "Area" },
+        "janela_oeste_com_cortina": { label: "Janela OESTE c/ cortina (m²)", default: 0, type: "Area" },
+        "janela_sol_se_so_com_cortina": { label: "Janela SE/SO c/ cortina (m²)", default: 0, type: "Area" },
+        "janela_sol_ne_no_com_cortina": { label: "Janela NE/NO c/ cortina (m²)", default: 0, type: "Area" },
+        "janela_norte": { label: "Janela NORTE (m²)", default: 0, type: "Area" },
         "janelas_sombra": { label: "Janelas à sombra (m²)", default: 0, type: "Area" },
+        "janelas_oeste_sem_cortina": { label: "Janela OESTE s/ cortina (m²)", default: 0, type: "Area" },
 
         // 2. CONSTRUÇÃO
-        "parede_mais_ensolarada": { label: "Parede mais ensolarada (m²)", default: 0, type: "Area" },
+        "parede_ao_sol_oeste": { label: "Parede ao sol OESTE (m²)", default: 0, type: "Area" },
+        "parede_ao_sol_norte": { label: "Parede ao sol NORTE (m²)", default: 0, type: "Area" },
         "paredes_não_ensolaradas": { label: "Paredes não ensolaradas (m²)", default: 0, type: "Area" },
         "telhado_com_laje": { label: "Telhado com laje (m²)", default: 0, type: "Area" },
         "laje_entre_andares": { label: "Laje entre andares (m²)", default: 0, type: "Area" },
         "piso_entre_andares": { label: "Piso entre andares (m²)", default: 0, type: "Area" },
-        
+
         // 3. ILUMINAÇÃO E EQUIPAMENTOS
         "iluminacao": { label: "Iluminação (W)", default: 0, type: "Potencia" },
         "equipamentos": { label: "Equipamentos (W)", default: 0, type: "Potencia" },
@@ -60,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "trabalho_escritorio": { label: "Trabalho de escritório (pessoas)", default: 0, isInteger: true, type: "Pessoas" },
 
         // 5. VENTILAÇÃO
-        "ventilacao": { label: "Ventilação (m³/h)", default: 0, type: "Vazao" }
+        "ventilacao": { label: "Ventilação / Renovação (m³/h)", default: 0, type: "Vazao" }
     };
 
     // 2. Referências aos elementos HTML
@@ -77,11 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateInputRows() {
         for (const key in PARCEL_DEFINITIONS) {
             const parcel = PARCEL_DEFINITIONS[key];
+            // A chave 'key' agora corresponderá em ambos os objetos
             const factor = HEAT_GAIN_FACTORS[key];
 
             const row = document.createElement('div');
             row.classList.add('table-row');
-            
+
             row.innerHTML = `
                 <span class="row-label">${parcel.label}</span>
                 <span class="row-input">
@@ -123,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return hasError ? null : inputs;
     }
-    
+
     function displayError(message) {
         errorMessagesDiv.style.display = 'block';
         errorMessagesDiv.innerHTML += `<p>${message}</p>`;
@@ -141,10 +145,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (factor !== undefined) {
                 calculatedLoad = inputs[key] * factor;
             } else {
-                // Opcional: Logar um aviso se um fator estiver faltando, o que pode indicar um erro de digitação
+                // Com a correção, este aviso não deve mais aparecer.
                 console.warn(`Fator não encontrado para a chave: ${key}. A carga para este item será 0.`);
             }
-            
+
             individualLoads[key] = calculatedLoad;
             totalKcalh += calculatedLoad;
         }
@@ -157,13 +161,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Exibe os Resultados na Interface
     function displayResults(results) {
-        totalKcalhSpan.textContent = results.totalKcalh.toFixed(0);
-        totalBtuhSpan.textContent = results.totalBtuh.toFixed(0);
-        totalTrSpan.textContent = results.totalTr.toFixed(1);
+        // Garante que o span exista antes de tentar modificar
+        if(totalKcalhSpan) totalKcalhSpan.textContent = results.totalKcalh.toFixed(0);
+        if(totalBtuhSpan) totalBtuhSpan.textContent = results.totalBtuh.toFixed(0);
+        if(totalTrSpan) totalTrSpan.textContent = results.totalTr.toFixed(1);
 
-        for (const key in results.individualLoads) {
+        for (const key in PARCEL_DEFINITIONS) { // Itera sobre PARCEL_DEFINITIONS para garantir a ordem e zerar campos vazios
+            const load = results.individualLoads[key] || 0;
             if (calculatedLoadSpans[key]) {
-                calculatedLoadSpans[key].textContent = results.individualLoads[key].toFixed(0);
+                calculatedLoadSpans[key].textContent = load.toFixed(0);
             }
         }
     }
